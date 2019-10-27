@@ -8,24 +8,21 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Properties;
 
+import static com.github.bugscatcher.TestUtil.loadProperties;
 import static io.restassured.RestAssured.given;
 
 public abstract class Abstract {
-    protected static String usernameToSearch;
-    protected static int userIdToSearch;
+    static Properties properties;
 
     @BeforeClass
     public static void setUp() throws IOException {
-        Properties properties = loadProperties();
-        usernameToSearch = properties.getProperty("username");
+        properties = loadProperties();
         RequestSpecification requestSpec = new RequestSpecBuilder()
                 .setAccept(ContentType.JSON)
                 .setContentType(ContentType.ANY)
@@ -37,9 +34,6 @@ public abstract class Abstract {
                 .build();
         RestAssured.requestSpecification = requestSpec;
         RestAssured.responseSpecification = responseSpec;
-        UserDTO userToSearch = searchUser();
-        Assert.assertNotNull("user shouldn't be null", userToSearch);
-        userIdToSearch = userToSearch.getId();
     }
 
     static <T> T[] getResource(String path, Class<T[]> responseClass) {
@@ -52,17 +46,10 @@ public abstract class Abstract {
         return response.as(responseClass);
     }
 
-    private static Properties loadProperties() throws IOException {
-        Properties properties = new Properties();
-        InputStream inputStream = Abstract.class.getResourceAsStream("/test.properties");
-        properties.load(inputStream);
-        return properties;
-    }
-
-    private static UserDTO searchUser() {
+    static UserDTO searchUser(String username) {
         UserDTO[] users = getResource(EndPoints.USERS, UserDTO[].class);
         return Arrays.stream(users)
-                .filter(user -> usernameToSearch.equals(user.getUsername()))
+                .filter(user -> username.equals(user.getUsername()))
                 .findAny()
                 .orElse(null);
     }
