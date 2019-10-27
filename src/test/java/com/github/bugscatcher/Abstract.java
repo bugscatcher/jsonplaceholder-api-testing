@@ -9,6 +9,8 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.BeforeClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,6 +21,7 @@ import static io.restassured.RestAssured.given;
 
 public abstract class Abstract {
     static Properties properties;
+    static final Logger LOG = LoggerFactory.getLogger(Abstract.class);
 
     @BeforeClass
     public static void setUp() throws IOException {
