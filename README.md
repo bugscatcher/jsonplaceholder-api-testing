@@ -1,4 +1,7 @@
-# jsonplaceholder-api-testing
+# Some tests for [JSONPlaceholder](https://jsonplaceholder.typicode.com/) #
+1. Searching user by username (username is set in `src/test/resources/test.properties`).
+1. Fetching all posts written by user (if there are no posts it is logged).
+1. Checking the format of email addresses for the comments (if there are no comments it is logged).
 
 ## How to run tests: ##
 `./gradlew clean test`
