@@ -23,21 +23,12 @@ public class Tests extends Abstract {
 
         PostDTO[] posts = getPosts(user.getId());
         Assert.assertNotEquals(0, posts.length);
-
-        Arrays.stream(posts)
-                .forEach(post -> {
-                    CommentsDTO[] comments = getComments(post.getId());
-                    Arrays.stream(comments)
-                            .forEach(comment -> {
-                                boolean isValid = TestUtil.isValid(comment.getEmail());
-                                Assert.assertTrue(getMessageForEmailInvalidFormat(comment.getEmail()), isValid);
-                            });
-                });
+        checkComments(posts);
     }
 
     @Test
     public void checkEmailsFormat_negative() {
-//        Here, I'm using ready-made data from db.json. This can be replaced by creating a user, post and comment through requests.
+//        Here I'm using ready-made data from db.json. This can be replaced by creating a user, post and comment through requests.
         String property = "username.negative";
         String username = properties.getProperty(property);
         Assert.assertNotNull(getMessageForNonExistentProperty(property), username);
@@ -45,7 +36,10 @@ public class Tests extends Abstract {
         UserDTO user = searchUser(username);
         PostDTO[] posts = getPosts(user.getId());
         Assert.assertNotEquals(0, posts.length);
+        checkComments(posts);
+    }
 
+    private void checkComments(PostDTO[] posts) {
         Arrays.stream(posts)
                 .forEach(post -> {
                     CommentsDTO[] comments = getComments(post.getId());
