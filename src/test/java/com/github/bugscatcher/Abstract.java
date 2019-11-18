@@ -1,6 +1,5 @@
 package com.github.bugscatcher;
 
-import com.github.bugscatcher.dto.UserDTO;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -13,15 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Properties;
 
 import static com.github.bugscatcher.TestUtil.loadProperties;
 import static io.restassured.RestAssured.given;
 
 public abstract class Abstract {
-    static Properties properties;
     static final Logger LOG = LoggerFactory.getLogger(Abstract.class);
+    static Properties properties;
 
     @BeforeClass
     public static void setUp() throws IOException {
@@ -47,13 +45,5 @@ public abstract class Abstract {
                 .extract()
                 .response();
         return response.as(responseClass);
-    }
-
-    static UserDTO searchUser(String username) {
-        UserDTO[] users = getResource(EndPoints.USERS, UserDTO[].class);
-        return Arrays.stream(users)
-                .filter(user -> username.equals(user.getUsername()))
-                .findAny()
-                .orElse(null);
     }
 }

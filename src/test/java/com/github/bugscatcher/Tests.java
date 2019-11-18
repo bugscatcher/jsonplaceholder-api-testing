@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static com.github.bugscatcher.Service.*;
 import static com.github.bugscatcher.TestUtil.*;
 
 public class Tests extends Abstract {
@@ -54,21 +55,5 @@ public class Tests extends Abstract {
                                 Assert.assertTrue(getMessageForEmailInvalidFormat(comment.getEmail()), isValid);
                             });
                 });
-    }
-
-    private PostDTO[] getPosts(int userID) {
-        PostDTO[] posts = getResource(EndPoints.POSTS + userID, PostDTO[].class);
-        if (posts.length == 0) {
-            LOG.warn("No posts for userId=" + userID);
-        }
-        return posts;
-    }
-
-    private CommentsDTO[] getComments(int postID) {
-        CommentsDTO[] comments = getResource(EndPoints.COMMENTS + postID, CommentsDTO[].class);
-        if (comments.length == 0) {
-            LOG.warn("No comments for postId=" + postID);
-        }
-        return comments;
     }
 }
