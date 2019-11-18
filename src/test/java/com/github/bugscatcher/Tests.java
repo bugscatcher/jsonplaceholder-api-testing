@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static com.github.bugscatcher.Service.*;
 import static com.github.bugscatcher.TestUtil.*;
 
 public class Tests extends Abstract {
@@ -15,25 +16,33 @@ public class Tests extends Abstract {
     public void checkEmailsFormat() {
         String property = "username";
         String username = properties.getProperty(property);
-//        ... but this does not take into account the fact that we can store several usernames.
-//        In this case, we need to read the properties something like `properties.getProperty(property).split(",")`
-//        and check user's post in loop.
         Assert.assertNotNull(getMessageForNonExistentProperty(property), username);
 
         UserDTO user = searchUser(username);
         Assert.assertNotNull(getMessageForNonExistentUser(username), user);
 
-        PostDTO[] posts = getResource(EndPoints.POSTS + user.getId(), PostDTO[].class);
-        if (posts.length == 0) {
-            LOG.warn("No posts for userId=" + user.getId());
-        }
+        PostDTO[] posts = getPosts(user.getId());
+        Assert.assertNotEquals(0, posts.length);
+        checkComments(posts);
+    }
 
+    @Test
+    public void checkEmailsFormat_negative() {
+//        Here I'm using ready-made data from db.json. This can be replaced by creating a user, post and comment through requests.
+        String property = "username.negative";
+        String username = properties.getProperty(property);
+        Assert.assertNotNull(getMessageForNonExistentProperty(property), username);
+
+        UserDTO user = searchUser(username);
+        PostDTO[] posts = getPosts(user.getId());
+        Assert.assertNotEquals(0, posts.length);
+        checkComments(posts);
+    }
+
+    private void checkComments(PostDTO[] posts) {
         Arrays.stream(posts)
                 .forEach(post -> {
-                    CommentsDTO[] comments = getResource(EndPoints.COMMENTS + post.getId(), CommentsDTO[].class);
-                    if (comments.length == 0) {
-                        LOG.warn("No comments for postId=" + post.getId());
-                    }
+                    CommentsDTO[] comments = getComments(post.getId());
                     Arrays.stream(comments)
                             .forEach(comment -> {
                                 boolean isValid = TestUtil.isValid(comment.getEmail());

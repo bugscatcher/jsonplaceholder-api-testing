@@ -3,6 +3,12 @@
 1. Fetching all posts written by user (if there are no posts it is logged).
 1. Checking the format of email addresses for the comments (if there are no comments it is logged).
 
+## How to run server: ##
+```
+npm install -g json-server
+json-server --watch src/test/resources/db.json
+```
+
 ## How to run tests: ##
 `./gradlew clean test`
 
