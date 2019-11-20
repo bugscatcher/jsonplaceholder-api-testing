@@ -8,34 +8,44 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static com.github.bugscatcher.Service.*;
+import static com.github.bugscatcher.APIHelper.*;
 import static com.github.bugscatcher.TestUtil.*;
 
 public class Tests extends Abstract {
     @Test
-    public void checkEmailsFormat() {
-        String property = "username";
+    public void checkEmailsFormat_oneUsername() {
+        String property = "username.samantha";
         String username = properties.getProperty(property);
         Assert.assertNotNull(getMessageForNonExistentProperty(property), username);
+        checkEmailsFormat(username);
+    }
 
+    @Test
+    public void checkEmailsFormat_multipleUsername() {
+        String property = "username.multiple";
+        String username = properties.getProperty(property);
+        Assert.assertNotNull(getMessageForNonExistentProperty(property), username);
+        checkEmailsFormat(username.split(","));
+    }
+
+    @Test
+    public void checkEmailsFormat_incorrectEmail() {
+//        Here I'm using ready-made data from db.json. This can be replaced by creating a user, post and comments through requests.
+        String property = "username.negative";
+        String username = properties.getProperty(property);
+        Assert.assertNotNull(getMessageForNonExistentProperty(property), username);
+        checkEmailsFormat(username);
+    }
+
+    private void checkEmailsFormat(String[] usernames) {
+        Arrays.stream(usernames).forEach(this::checkEmailsFormat);
+    }
+
+    private void checkEmailsFormat(String username) {
         UserDTO user = searchUser(username);
         Assert.assertNotNull(getMessageForNonExistentUser(username), user);
 
         PostDTO[] posts = getPosts(user.getId());
-        Assert.assertNotEquals(0, posts.length);
-        checkComments(posts);
-    }
-
-    @Test
-    public void checkEmailsFormat_negative() {
-//        Here I'm using ready-made data from db.json. This can be replaced by creating a user, post and comment through requests.
-        String property = "username.negative";
-        String username = properties.getProperty(property);
-        Assert.assertNotNull(getMessageForNonExistentProperty(property), username);
-
-        UserDTO user = searchUser(username);
-        PostDTO[] posts = getPosts(user.getId());
-        Assert.assertNotEquals(0, posts.length);
         checkComments(posts);
     }
 
