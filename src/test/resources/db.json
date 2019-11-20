@@ -605,6 +605,12 @@
       "id": 101,
       "title": "something",
       "body": "magic is here"
+    },
+    {
+      "userId": 668,
+      "id": 102,
+      "title": "something",
+      "body": "magic is here"
     }
   ],
   "comments": [
@@ -39856,6 +39862,52 @@
       "name": "James Smith",
       "username": "heisenbug",
       "email": "bug",
+      "address": {
+        "street": "",
+        "suite": "",
+        "city": "",
+        "zipcode": "",
+        "geo": {
+          "lat": "0",
+          "lng": "0"
+        }
+      },
+      "phone": "123-456-7890",
+      "website": "",
+      "company": {
+        "name": "",
+        "catchPhrase": "",
+        "bs": ""
+      }
+    },
+    {
+      "id": 667,
+      "name": "John Smith",
+      "username": "heisenbug0",
+      "email": "correct@gmail.com",
+      "address": {
+        "street": "",
+        "suite": "",
+        "city": "",
+        "zipcode": "",
+        "geo": {
+          "lat": "0",
+          "lng": "0"
+        }
+      },
+      "phone": "123-456-7890",
+      "website": "",
+      "company": {
+        "name": "",
+        "catchPhrase": "",
+        "bs": ""
+      }
+    },
+    {
+      "id": 668,
+      "name": "Alec Smith",
+      "username": "heisenbug1",
+      "email": "correct1@gmail.com",
       "address": {
         "street": "",
         "suite": "",
