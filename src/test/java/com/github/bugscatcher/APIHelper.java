@@ -9,7 +9,7 @@ import java.util.Arrays;
 import static com.github.bugscatcher.Abstract.LOG;
 import static com.github.bugscatcher.Abstract.getResource;
 
-class Service {
+class APIHelper {
     static UserDTO searchUser(String username) {
         UserDTO[] users = getResource(EndPoints.USERS, UserDTO[].class);
         return Arrays.stream(users)
